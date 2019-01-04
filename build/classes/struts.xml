@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<constant name="struts.objectFactory" value="spring" />
+	<package name="shop" extends="struts-default" namespace="/">
+		<!-- 配置自定义拦截器 -->
+		<interceptors>
+			<interceptor name="privilegeInterceptor"
+				class="ssh.interceptor.PrivilegeInterceptor" />
+		</interceptors>
+		<global-results>
+			<result name="msg">/WEB-INF/jsp/msg.jsp</result>
+			<result name="login">/WEB-INF/jsp/login.jsp</result>
+			<result name="adminLogin">/admin/index.jsp</result>
+		</global-results>
+		<!-- 首页模块action -->
+		<action name="index" class="indexAction">
+			<result name="index">/WEB-INF/jsp/index.jsp</result>
+		</action>
+		<!-- 用户模块action -->
+		<action name="user_*" class="userAction" method="{1}">
+			<result name="registPage">/WEB-INF/jsp/regist.jsp</result>
+			<result name="input">/WEB-INF/jsp/regist.jsp</result>
+			<result name="loginPage">/WEB-INF/jsp/login.jsp</result>
+			<result name="loginSuccess" type="redirectAction">index</result>
+			<result name="logout" type="redirectAction">index</result>
+			<result name="checkcodeFail">/WEB-INF/jsp/regist.jsp</result>
+			<result name="info">/WEB-INF/jsp/userinfo.jsp</result>
+			<result name="registToLogin">/WEB-INF/jsp/registToLogin.jsp</result>
+			<result name="registToRegist">/WEB-INF/jsp/registToRegist.jsp</result>
+			<allowed-methods>registPage,findByName,regist,loginPage,login,logout,info</allowed-methods>
+		</action>
+		<!-- 验证码action -->
+		<action name="checkImg" class="checkImgAction">
+		</action>
+		<!-- 型号模块action -->
+		<action name="version_*" class="versionAction" method="{1}">
+			<result name="findByVid">/WEB-INF/jsp/detail.jsp</result>
+			<allowed-methods>findByVid</allowed-methods>
+		</action>
+		<!-- 品牌模块action -->
+		<action name="brand_*" class="brandAction" method="{1}">
+			<result name="findByBid">/WEB-INF/jsp/brand.jsp</result>
+			<result name="findByPageBid">/WEB-INF/jsp/brandPage.jsp</result>
+			<allowed-methods>findByBid,findByPageBid</allowed-methods>
+		</action>
+		<!-- 购物车模块action -->
+		<action name="cart_*" class="cartAction" method="{1}">
+			<result name="addCart">/WEB-INF/jsp/cart.jsp</result>
+			<result name="clearCart">/WEB-INF/jsp/cart.jsp</result>
+			<result name="myCart">/WEB-INF/jsp/cart.jsp</result>
+			<result name="removeCart">/WEB-INF/jsp/cart.jsp</result>
+			<allowed-methods>addCart,clearCart,myCart,removeCart</allowed-methods>
+		</action>
+		<!-- 订单模块action -->
+		<action name="order_*" class="orderAction" method="{1}">
+			<result name="saveSuccess">/WEB-INF/jsp/order.jsp</result>
+			<result name="payOrder">index.jsp</result>
+			<result name="findOrderByUid">/WEB-INF/jsp/orderList.jsp</result>
+			<result name="findOrderByOidSuccess">/WEB-INF/jsp/order.jsp</result>
+			<result name="payFinished">/WEB-INF/jsp/payFinished.jsp</result>
+			<result name="deleteOrder" type="redirectAction">order_findOrderByUid?page=1
+			</result>
+			<result name="updateState" type="redirectAction">order_findOrderByUid?page=1
+			</result>
+			<result name="orderDetail">/WEB-INF/jsp/orderDetail.jsp</result>
+			<allowed-methods>save,payOrder,findOrderByUid,findOrderByOid,payFinished,deleteOrder,orderDetail,updateState</allowed-methods>
+		</action>
+		<!-- 支付模块action -->
+		<action name="pay_*" class="payAction" method="{1}">
+			<!-- <result name="paySuccessReturn" >/WEB-INF/jsp/orderList.jsp</result> -->
+			<result name="paySuccessReturn" type="redirectAction">order_findOrderByUid?page=1
+			</result>
+			<allowed-methods>paySuccessReturn</allowed-methods>
+		</action>
+
+
+		<!-- 后台管理人员action -->
+		<action name="AdminUser_*" class="is_ad_AdminUserAction"
+			method="{1}_AdminUser">
+			<result name="home" type="redirect">/admin/home.jsp</result>
+			<result name="index">/admin/index.jsp</result>
+			<allowed-methods>login_AdminUser,logout_AdminUser</allowed-methods>
+		</action>
+		<!-- 后台顾客信息管理 -->
+		<action name="AdminCustomer_*"
+			class="is_ad_AdminCustomerAction" method="{1}">
+			<result name="list">/admin/customer/list.jsp</result>
+			<result name="edit">/admin/customer/edit.jsp</result>
+			<result name="KSuccess" type="redirectAction">AdminCustomer_KeySearch?page=${page}&amp;key=${key}&amp;value=${value}
+			</result>
+			<result name="keylist">/admin/customer/keylist.jsp</result>
+			<result name="Success" type="redirectAction">AdminCustomer_findall?page=${page}
+			</result>
+			<interceptor-ref name="privilegeInterceptor" />
+			<interceptor-ref name="defaultStack" />
+			<allowed-methods>findall,delete,findbyId,update,KeySearch</allowed-methods>
+		</action>
+		<!-- 后台手机品牌管理 -->
+		<action name="AdminBrand_*" class="is_ad_AdminBrandAction"
+			method="{1}">
+			<result name="list">/admin/brand/list.jsp</result>
+			<result name="edit">/admin/brand/edit.jsp</result>
+			<interceptor-ref name="privilegeInterceptor">
+				<param name="excludeMethods">login</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+			<allowed-methods>findallBrand,findbyId,update,save,delete</allowed-methods>
+		</action>
+		<!-- 后台型号管理 -->
+		<action name="AdminVersion_*" class="is_ad_AdminVersionAction"
+			method="{1}">
+			<result name="list">/admin/version/list.jsp</result>
+			<result name="edit">/admin/version/edit.jsp</result>
+			<result name="updateSuccess" type="redirectAction">AdminVersion_findallVersion?page=${page}
+			</result>
+			<result name="addPage">/admin/version/add.jsp</result>
+			<result name="saveSuccess" type="redirectAction">AdminVersion_findallVersion?page=${page}
+			</result>
+			<interceptor-ref name="privilegeInterceptor" />
+			<interceptor-ref name="defaultStack" />
+			<allowed-methods>findallVersion,edit,update,addPage,save</allowed-methods>
+		</action>
+		<!-- 后台手机配置管理 -->
+		<action name="AdminProduct_*" class="is_ad_AdminProductAction"
+			method="{1}">
+			<result name="list">/admin/product/list.jsp</result>
+			<result name="add">/admin/product/add.jsp</result>
+			<result name="edit">/admin/product/edit.jsp</result>
+			<result name="Success" type="redirectAction">AdminProduct_findallProduct?page=${page}
+			</result>
+			<interceptor-ref name="privilegeInterceptor" />
+			<interceptor-ref name="defaultStack" />
+			<allowed-methods>findallProduct,addPage,save,edit,update,delete</allowed-methods>
+		</action>
+		<!-- 后台订单管理 -->
+		<action name="AdminOrder_*" class="is_ad_AdminOrderAction"
+			method="{1}">
+			<result name="list">/admin/order/list.jsp</result>
+			<result name="test">/admin/customer/test.jsp</result>
+			<result name="add">/admin/order/add.jsp</result>
+			<result name="KSuccess" type="redirectAction">AdminOrder_KeySearch?page=${page}&amp;key=${key}&amp;value=${value}
+			</result>
+			<result name="keylist">/admin/order/keylist.jsp</result>
+			<result name="orderItem">/admin/order/orderItem.jsp</result>
+			<result name="Success" type="redirectAction">AdminOrder_findallOrder?page=${page}
+			</result>
+			<interceptor-ref name="privilegeInterceptor" />
+			<interceptor-ref name="defaultStack" />
+			<allowed-methods>findallOrder,updateState,addExpressnumber,updateExpressnumber,KeySearch,findOrderItem,delete</allowed-methods>
+		</action>
+	</package>
+</struts>

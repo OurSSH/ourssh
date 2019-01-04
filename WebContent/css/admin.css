@@ -1,0 +1,50 @@
+input:focus, textarea:focus {
+	border: 1px dotted #f00;
+	background: #fcc;
+}
+
+input, texteare {
+	border: 1px solid #cad9ea;
+}
+
+fieldset {
+	width: 80%;
+}
+
+textarea {
+	width: 65%;
+	height: 300px;
+}
+
+body {
+	font-family: ����;
+	font-size: 13px;
+	align: left;
+}
+
+table {
+	width: 50%;
+	empty-cells: show;
+	border-collapse: collapse;
+	border: 1px solid #e78f08;
+}
+
+td, th {
+	height: 30px;
+	border: 1px solid #cad9ea;
+	padding: 0;
+}
+
+td{
+	text-align:center;
+}
+
+
+div {
+	margin: 5px;
+	padding: 5px;
+	width: 100%;
+}
+
+
+

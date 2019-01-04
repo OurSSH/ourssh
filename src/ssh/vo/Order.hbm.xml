@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-12-25 20:36:56 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="ssh.vo.Order" table="orders">
+		<id name="oid">
+			<generator class="assigned" />
+		</id>
+		<property name="total" />
+		<property name="ordertime" />
+		<property name="orderPayTime" />
+		<property name="state" />
+		<property name="name" />
+		<property name="phone" />
+		<property name="addr" />
+		<property name="alipaycode" />
+		<property name="realpaytotal" />
+		<property name="expressnumber" />
+		<property name="expresstype" />
+		<many-to-one name="user" class="ssh.vo.User" column="uid" lazy="false"></many-to-one>
+		<set name="orderItems" table="orderitem" lazy="false" inverse="true" cascade="save-update">
+			<key column="oid" ></key>
+			<one-to-many class="ssh.vo.OrderItem" />
+		</set>
+	</class>
+</hibernate-mapping>

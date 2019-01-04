@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-12-25 20:36:56 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="ssh.vo.OrderItem" table="orderitem">
+        <id name="oiid">
+            <generator class="assigned" />
+        </id>
+        <property name="count"/>
+        <property name="subtotal"/>
+        <!-- 与产品的关系 -->
+        <many-to-one name="product" class="ssh.vo.Product"  lazy="false"  column="pid"/>
+        <!-- 与订单的关系 cascade="save-update,delete" -->
+        <many-to-one name="order" class="ssh.vo.Order" column="oid"/>
+    </class>
+</hibernate-mapping>

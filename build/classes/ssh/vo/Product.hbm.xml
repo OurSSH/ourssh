@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-12-24 19:15:53 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="ssh.vo.Product" table="product">
+        <id name="pid" type="int">
+            <column name="pid" />
+            <generator class="native" />
+        </id>
+        <property name="pname"/>
+        <property name="pdesc"/>
+        <property name="pprice"/>
+        <property name="pstock"/>
+        <property name="pimg" />
+        <!-- name为Product类中的外键属性Version version -->
+        <!-- column为外键表里面的主键字段 -->
+        <many-to-one name="version" lazy="false" class="ssh.vo.Version" column="vid"></many-to-one>
+    </class>
+</hibernate-mapping>
